@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Dynamic Basic Income</title>
+	<meta charset="UTF-8"> 
+</head>
+<body onload="_onload();">
+	<script type="text/javascript" src="lib/Chart.bundle.js"></script>
+	<script type="text/javascript" src="js/dbi.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/dbi.css">
+
+	<div id="dbi_options_container" class="dbi_content_container">
+		<div class="dbi_title">Revenue settings</div>
+		<input id="dbi_chart_title_benefit" type="hidden" value="Basic income">
+		<input id="dbi_chart_title_prediction" type="hidden" value="Prediction">
+		<input id="dbi_chart_title_revenue" type="hidden" value="Revenue">
+		<input id="dbi_chart_title_withdrawal" type="hidden" value="Withdrawal">
+		<select id="dbi_revenue_preset" onchange="revenuePresetUpdate()">
+			<option value="a">$0/m</option>
+			<option value="b">$100-200/m</option>
+			<option value="c">$200-400/m</option>
+			<option value="d">$400-600/m</option>
+			<option value="e">$600-800/m</option>
+			<option value="f">$800-1200/m</option>
+			<option value="g">$1200-1600/m</option>
+			<option value="h">$1600-2000/m</option>
+			<option value="i">$2000-2500/m</option>
+		</select>
+		<div class="dbi_hidden">
+			<input id="dbi_work_months" class="hidden" type="text" name="ansiokuukaudet" value="" onchange="revenueSettingsUpdate()">
+			<input id="dbi_revenue_average" type="text" name="keskiansio" placeholder="Keskiansio" onchange="revenueSettingsUpdate()">
+			<input id="dbi_revenue_variance" type="text" name="vaihteluvali" placeholder="Vaihteluväli" onchange="revenueSettingsUpdate()">
+			<input id="dbi_revenue_min" type="text" name="minimiansio" placeholder="Minimiansio" disabled>
+			<input id="dbi_revenue_max" type="text" name="maksimiansio" placeholder="Maksimiansio" disabled>
+			<button id="dbi_revenue_reset" onclick="dataReset()">Reset revenue</button>
+		</div>
+
+	</div>
+
+	<div id="dbi_chart_container" class="dbi_content_container">
+		<canvas id="dbi_chart"></canvas>
+	</div>
+
+	<div id="dbi_benefit_slider_container" class="dbi_content_container">
+		<span id="dbi_revenue_slider_title" class="dbi_title">How much did you earn last month:</span>
+		<span class="dbi_title dbi_float_right">
+			<span>$</span><span id="dbi_revenue_slider_value">0</span>
+		</span>
+		<input id="dbi_revenue_slider" class="dbi_slider" type="range" min="0" max="100" value="100" oninput="revenueUpdateSliderValue()">
+		<div id="dbi_revenue_slider_subtitles">
+			<span class="dbi_slider_subtitle dbi_float_left">
+				<span>$</span><span id="dbi_revenue_slider_min">0</span>
+			</span>
+			<span class="dbi_slider_subtitle dbi_float_right">
+				<span>$</span><span id="dbi_revenue_slider_max">100</span>
+			</span>
+		</div>
+		<br/>
+		<br/>
+		<span id="dbi_benefit_slider_title" class="dbi_title">How much basic income do you collect:</span>
+		<span class="dbi_title dbi_float_right">
+			<span>$</span><span id="dbi_benefit_slider_value">0</span>
+		</span>
+		<input id="dbi_benefit_slider" class="dbi_slider" type="range" min="0" max="100" value="0" oninput="benefitUpdateSliderValue()">
+		<div id="dbi_benefit_slider_subtitles">
+			<span class="dbi_slider_subtitle dbi_float_left">
+				<span>$</span><span id="dbi_benefit_slider_min">0</span>
+			</span>
+			<span class="dbi_slider_subtitle dbi_float_right">
+				<span>$</span><span id="dbi_benefit_slider_max">100</span>
+			</span>
+		</div>
+		<div>
+			<div id="dbi_benefit_change_month" class="dbi_title_minor dbi_float_right_newline">
+				<span id="dbi_benefit_change_month_increase" class="">Increases</span>
+				<span id="dbi_benefit_change_month_decrease" class="">Decreases</span>
+				<span id="dbi_benefit_change_month"> basic income next month </span>
+				<span class="dbi_slider_subtitle">$</span><span id="dbi_benefit_change_month_value">20</span>
+			</div>
+			<div id="dbi_benefit_change_total" class="dbi_title_minor dbi_float_right_newline">
+				<span id="dbi_benefit_change_total_increase" class="">Increases</span>
+				<span id="dbi_benefit_change_total_decrease" class="">Decreases</span>
+				<span id="dbi_benefit_change_total"> basic income in total </span>
+				<span class="dbi_slider_subtitle">$</span><span id="dbi_benefit_change_total_value">300</span>
+			</div>
+		</div>
+		<button id="dbi_collect_benefit" class="dbi_float_right_newline" onclick="benefitCollect()">Collect basic income</button>
+	</div>
+
+</body>
+</html>
